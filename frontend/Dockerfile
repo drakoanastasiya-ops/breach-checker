@@ -1,4 +1,5 @@
 FROM nginx:alpine
-LABEL maintainer="imie.nazwisko@example.com"
-COPY . /usr/share/nginx/html
+LABEL autor="Anastasiya Drako" data="2026-11-05"
+COPY . /usr/share/nginx/html/
 EXPOSE 80
+
