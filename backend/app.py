@@ -39,6 +39,10 @@ def check():
     # TODO 2: zwróć JSON {"found": found}
     return jsonify({"found": found})
 
+@app.get("/health")
+def health():
+    return jsonify({"status": "ok"})
+
 
 if __name__ == "__main__":
     # 0.0.0.0 = nasłuchuj na wszystkich interfejsach kontenera, nie tylko na jego localhost
