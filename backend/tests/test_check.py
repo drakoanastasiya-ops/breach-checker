@@ -21,3 +21,27 @@ def test_plaintext_password_is_rejected(client):
     # API przyjmuje tylko skrót - hasło w postaci jawnej musi zostać odrzucone
     response = client.post("/check", json={"hash": "123456"})
     assert response.status_code == 400
+
+
+def test_uppercase_hash_is_found(client):
+    response = client.post("/check", json={"hash": LEAKED.upper()})
+    assert response.status_code == 200
+    assert response.get_json() == {"found": True}
+
+
+def test_short_hash_is_rejected(client):
+    response = client.post("/check", json={"hash": "7c4a8d09ca3762af61e59520943dc26494f8941"})
+    assert response.status_code == 400
+    assert "error" in response.get_json()
+
+
+def test_non_hex_40_char_hash_is_rejected(client):
+    response = client.post("/check", json={"hash": "g" * 40})
+    assert response.status_code == 400
+    assert "error" in response.get_json()
+
+
+def test_non_json_body_is_rejected(client):
+    response = client.post("/check", data="abc")
+    assert response.status_code == 400
+    assert "error" in response.get_json()
